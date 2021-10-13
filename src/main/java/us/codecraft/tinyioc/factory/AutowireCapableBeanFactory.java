@@ -8,33 +8,34 @@ import java.lang.reflect.Field;
 
 /**
  * 可自动装配内容的BeanFactory
- * 
+ *
  * @author yihua.huang@dianping.com
  */
 public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
-	@Override
-	protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception {
-		Object bean = createBeanInstance(beanDefinition);
+    @Override
+    protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception {
+        Object bean = createBeanInstance(beanDefinition);
         beanDefinition.setBean(bean);
-		applyPropertyValues(bean, beanDefinition);
-		return bean;
-	}
+        applyPropertyValues(bean, beanDefinition);
+        return bean;
+    }
 
-	protected Object createBeanInstance(BeanDefinition beanDefinition) throws Exception {
-		return beanDefinition.getBeanClass().newInstance();
-	}
+    protected Object createBeanInstance(BeanDefinition beanDefinition) throws Exception {
+        return beanDefinition.getBeanClass().newInstance();
+    }
 
-	protected void applyPropertyValues(Object bean, BeanDefinition mbd) throws Exception {
-		for (PropertyValue propertyValue : mbd.getPropertyValues().getPropertyValues()) {
-			Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
-			declaredField.setAccessible(true);
-			Object value = propertyValue.getValue();
-			if (value instanceof BeanReference) {
-				BeanReference beanReference = (BeanReference) value;
-				value = getBean(beanReference.getName());
-			}
-			declaredField.set(bean, value);
-		}
-	}
+    protected void applyPropertyValues(Object bean, BeanDefinition mbd) throws Exception {
+        for (PropertyValue propertyValue : mbd.getPropertyValues().getPropertyValues()) {
+            Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
+            declaredField.setAccessible(true);
+            Object value = propertyValue.getValue();
+            //如果属性值为BeanReference，使用getBean获取---怎么能保证
+            if (value instanceof BeanReference) {
+                BeanReference beanReference = (BeanReference) value;
+                value = getBean(beanReference.getName());
+            }
+            declaredField.set(bean, value);
+        }
+    }
 }

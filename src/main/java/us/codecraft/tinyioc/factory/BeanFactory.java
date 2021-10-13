@@ -4,6 +4,7 @@ import us.codecraft.tinyioc.BeanDefinition;
 
 /**
  * bean的容器
+ *
  * @author yihua.huang@dianping.com
  */
 public interface BeanFactory {
