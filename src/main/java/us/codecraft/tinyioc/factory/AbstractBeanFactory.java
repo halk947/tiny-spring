@@ -26,6 +26,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
     /**
      * 初始化bean
+     * >> 由容器负责bean的创建
      * >> bean的创建过程设置为abstract，保持扩展性
      *
      * @param beanDefinition
