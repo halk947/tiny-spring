@@ -5,7 +5,7 @@ tiny-spring
 
 ## 1.step1-最基本的容器
 	
-	git checkout step-1-container-register-and-get
+	git checkout 1-container-register-and-get
 
 IoC最基本的角色有两个：容器(`BeanFactory`)和Bean本身。这里使用`BeanDefinition`来封装了bean对象，这样可以保存一些额外的元信息。测试代码：
 
@@ -24,7 +24,7 @@ helloWorldService.helloWorld();
 
 ## 2.step2-将bean创建放入工厂
 
-	git checkout step-2-abstract-beanfactory-and-do-bean-initilizing-in-it
+	git checkout 2-abstract-beanfactory-and-do-bean-initilizing-in-it
 
 step1中的bean是初始化好之后再set进去的，实际使用中，我们希望容器来管理bean的创建。于是我们将bean的初始化放入BeanFactory中。为了保证扩展性，我们使用Extract Interface的方法，将`BeanFactory`替换成接口，而使用`AbstractBeanFactory`和`AutowireCapableBeanFactory`作为其实现。"AutowireCapable"的意思是“可自动装配的”，为我们后面注入属性做准备。
 
@@ -44,7 +44,7 @@ helloWorldService.helloWorld();
 	
 ## 3.step3-为bean注入属性
 
-	git checkout step-3-inject-bean-with-property
+	git checkout 3-inject-bean-with-property
 
 这一步，我们想要为bean注入属性。我们选择将属性注入信息保存成`PropertyValue`对象，并且保存到`BeanDefinition`中。这样在初始化bean的时候，我们就可以根据PropertyValue来进行bean属性的注入。Spring本身使用了setter来进行注入，这里为了代码简洁，我们使用Field的形式来注入。
 	
@@ -72,7 +72,7 @@ helloWorldService.helloWorld();
 
 ## 4.step4-读取xml配置来初始化bean
 
-	git checkout step-4-config-beanfactory-with-xml
+	git checkout 4-config-beanfactory-with-xml
 	
 这么大一坨初始化代码让人心烦。这里的`BeanDefinition`只是一些配置，我们还是用xml来初始化吧。我们定义了`BeanDefinitionReader`初始化bean，它有一个实现是`XmlBeanDefinitionReader`。
 
@@ -94,7 +94,7 @@ helloWorldService.helloWorld();
 
 ## 5.step5-为bean注入bean
 
-	git checkout step-5-inject-bean-to-bean
+	git checkout 5-inject-bean-to-bean
 	
 使用xml配置之后，似乎里我们熟知的Spring更近了一步！但是现在有一个大问题没有解决：我们无法处理bean之间的依赖，无法将bean注入到bean中，所以它无法称之为完整的IoC容器！如何实现呢？我们定义一个`BeanReference`，来表示这个属性是对另一个bean的引用。这个在读取xml的时候初始化，并在初始化bean的时候，进行解析和真实bean的注入。
 
@@ -134,7 +134,7 @@ helloWorldService.helloWorld();
 
 ## 6.step6-ApplicationContext登场
 
-	git checkout step-6-invite-application-context
+	git checkout 6-invite-application-context
 	
 现在BeanFactory的功能齐全了，但是使用起来有点麻烦。于是我们引入熟悉的`ApplicationContext`接口，并在`AbstractApplicationContext`的`refresh()`方法中进行bean的初始化工作。
 
@@ -153,7 +153,7 @@ AOP相关概念较多，我不会一一列举，但是会在每一步对概念�
 AOP分为配置(Pointcut，Advice)，织入(Weave)两部分工作，当然还有一部分是将AOP整合到整个容器的生命周期中。
 
 ## 7.step7-使用JDK动态代理实现AOP织入
-	git checkout step-7-method-interceptor-by-jdk-dynamic-proxy
+	git checkout 7-method-interceptor-by-jdk-dynamic-proxy
 	
 织入（weave）相对简单，我们先从它开始。Spring AOP的织入点是`AopProxy`，它包含一个方法`Object getProxy()`来获取代理后的对象。
 
@@ -200,7 +200,7 @@ Spring的AOP只支持方法级别的调用，所以其实在AopProxy里，我们
 ```
 
 ## 8.step8-使用AspectJ管理切面
-	git checkout step-8-invite-pointcut-and-aspectj
+	git checkout 8-invite-pointcut-and-aspectj
 	
 完成了织入之后，我们要考虑另外一个问题：对什么类以及什么方法进行AOP？对于“在哪切”这一问题的定义，我们又叫做“Pointcut”。Spring中关于Pointcut包含两个角色：`ClassFilter`和`MethodMatcher`，分别是对类和方法做匹配。Pointcut有很多种定义方法，例如类名匹配、正则匹配等，但是应用比较广泛的应该是和`AspectJ`表达式的方式。
 
@@ -234,7 +234,7 @@ aspect PointObserving {
 ```
 
 ## 9.step9-将AOP融入Bean的创建过程
-	git checkout step-9-auto-create-aop-proxy
+	git checkout 9-auto-create-aop-proxy
 	
 万事俱备，只欠东风！现在我们有了Pointcut和Weave技术，一个AOP已经算是完成了，但是它还没有结合到Spring中去。怎么进行结合呢？Spring给了一个巧妙的答案：使用`BeanPostProcessor`。
 
@@ -273,7 +273,7 @@ BeanPostProcessor是BeanFactory提供的，在Bean初始化过程中进行扩展
 
 
 ## 10.step10-使用CGLib进行类的织入
-	git checkout step-10-invite-cglib-and-aopproxy-factory
+	git checkout 10-invite-cglib-and-aopproxy-factory
 	
 前面的JDK动态代理只能对接口进行代理，对于类则无能为力。这里我们需要一些字节码操作技术。这方面大概有几种选择：`ASM`，`CGLib`和`javassist`，后两者是对`ASM`的封装。Spring中使用了CGLib。
 
