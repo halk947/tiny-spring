@@ -9,7 +9,7 @@ public class HelloWorldService {
 
     private OutputService outputService;
 
-    public void helloWorld(){
+    public void helloWorld() {
         outputService.output(text);
     }
 
