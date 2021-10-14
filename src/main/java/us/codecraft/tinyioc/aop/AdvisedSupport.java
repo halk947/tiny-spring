@@ -4,11 +4,13 @@ import org.aopalliance.intercept.MethodInterceptor;
 
 /**
  * 代理相关的元数据
+ * 包装目标对象和拦截器方法，供aop使用
+ *
  * @author yihua.huang@dianping.com
  */
 public class AdvisedSupport {
 
-	private TargetSource targetSource;
+    private TargetSource targetSource;
 
     private MethodInterceptor methodInterceptor;
 
