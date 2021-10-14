@@ -8,6 +8,13 @@ import org.aopalliance.intercept.MethodInvocation;
  */
 public class TimerInterceptor implements MethodInterceptor {
 
+    /**
+     * MethodInvocation，AOP标准，对应Joinpoint
+     *
+     * @param invocation
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         long time = System.nanoTime();

@@ -12,6 +12,9 @@ public class AdvisedSupport {
 
     private TargetSource targetSource;
 
+    /**
+     * AOP内部类，对应Advice
+     */
     private MethodInterceptor methodInterceptor;
 
     public TargetSource getTargetSource() {
